@@ -73,12 +73,15 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const check = async (req, res, next) => {
+/*
+    GET /api/auth/check
+*/
+export const check = async (req, res) => {
   const { user } = res.locals;
   if (!user) {
-    console.log("토큰없다요");
+    return res.sendStatus(401);
   }
-  console.log("jwt미들웨어에서 여기왔다요", user);
+  res.json(user);
 };
 
 export const logout = async (req, res, next) => {};
