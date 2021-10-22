@@ -76,7 +76,7 @@ export const login = async (req, res, next) => {
 /*
     GET /api/auth/check
 */
-export const check = async (req, res) => {
+export const check = async (req, res, next) => {
   const { user } = res.locals;
   if (!user) {
     return res.sendStatus(401);
@@ -84,4 +84,9 @@ export const check = async (req, res) => {
   res.json(user);
 };
 
-export const logout = async (req, res, next) => {};
+/*
+    POST /api/auth/logout
+*/
+export const logout = async (req, res, next) => {
+  res.cookie("access_token", "", { maxAge: 1, httpOnly: true }).sendStatus(204);
+};

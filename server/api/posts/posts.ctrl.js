@@ -6,9 +6,29 @@ import Joi from "joi";
 
 const { ObjectId } = mongoose.Types;
 
-export const checkObjectId = (req, res, next) => {
+export const getPostById = async (req, res, next) => {
   const { id } = req.params;
-  !ObjectId.isValid(id) ? res.sendStatus(400) : next();
+  if (!ObjectId.isValid(id)) {
+    return res.sendStatus(400);
+  }
+  try {
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.sendStatus(404);
+    }
+    res.locals.post = post;
+    return next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const checkOwnPost = (req, res, next) => {
+  const { user, post } = res.locals;
+  if (post.user._id.toString() !== user._id) {
+    return res.sendStatus(403);
+  }
+  return next();
 };
 
 /*
@@ -16,15 +36,21 @@ export const checkObjectId = (req, res, next) => {
 */
 export const list = async (req, res, next) => {
   try {
+    const { tag, username } = req.query;
+    const query = {
+      ...(username ? { "user.username": username } : {}),
+      ...(tag ? { tags: tag } : {}),
+    };
+
     const page = parseInt(req.query.page || "1", 10);
-    console.log(page);
-    const postCount = await Post.countDocuments();
+    const postCount = await Post.countDocuments(query);
     const lastPage = Math.ceil(postCount / 10);
 
     if (page < 1 || page > lastPage || isNaN(page)) {
       return res.sendStatus(400);
     }
-    const posts = await Post.find({})
+
+    const posts = await Post.find(query)
       .sort({ _id: -1 })
       .limit(10)
       .skip((page - 1) * 10)
@@ -50,14 +76,7 @@ export const list = async (req, res, next) => {
     GET /api/posts/:id
 */
 export const read = async (req, res, next) => {
-  const { id } = req.params;
-
-  try {
-    const post = await Post.findById(id);
-    !post ? res.sendStatus(404) : res.json(post);
-  } catch (err) {
-    next(err);
-  }
+  res.json(res.locals.post);
 };
 
 /*
@@ -83,6 +102,7 @@ export const write = async (req, res, next) => {
     content,
     tags,
     createdAt,
+    user: res.locals.user,
   });
   try {
     await post.save();

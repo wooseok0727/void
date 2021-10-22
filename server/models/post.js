@@ -18,6 +18,10 @@ const PostSchema = new Schema({
     },
   ],
   createdAt: String,
+  user: {
+    _id: mongoose.Types.ObjectId,
+    username: String,
+  },
 });
 
 const Post = mongoose.model("Post", PostSchema);
