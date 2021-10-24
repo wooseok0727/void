@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Button from "../common/Button";
+import AuthModal from "./AuthModal";
+import { useEffect, useState } from "react";
 
 const AuthFormWrapper = styled.div`
   h3 {
@@ -8,6 +10,9 @@ const AuthFormWrapper = styled.div`
     color: #fff;
     margin-bottom: 1rem;
     text-align: left;
+  }
+  form {
+    text-align: center;
   }
 `;
 
@@ -27,39 +32,69 @@ const StyledInput = styled.input`
 `;
 
 const Footer = styled.div`
-  margin-top: 2rem;
+  margin-top: 1rem;
   text-align: right;
   a {
     font-weight: bold;
     color: #fff;
     text-decoration: underline;
+    font-size: 0.9rem;
   }
 `;
 
-const AuthForm = ({ type }) => {
+const AuthForm = ({ type, form, onChange, onSubmit, error, setError }) => {
+  const [modal, setModal] = useState(false);
+
+  const onCancel = () => {
+    setError(null);
+    setModal(false);
+  };
+
+  useEffect(() => {
+    if (error) {
+      setModal(true);
+    }
+  }, [error]);
+
   return (
-    <AuthFormWrapper>
-      <h3>"{type}"</h3>
-      <form>
-        <StyledInput autoComplete="off" name="username" />
-        <StyledInput autoComplete="off" name="password" type="password" />
-        {type === "JOIN" && (
+    <>
+      <AuthFormWrapper>
+        <h3>"{type}"</h3>
+        <form onSubmit={onSubmit}>
           <StyledInput
             autoComplete="off"
-            name="passwordConfirm"
-            type="password"
+            name="username"
+            onChange={onChange}
+            value={form.username || ""}
           />
-        )}
-        <Button reverse>{type}</Button>
-      </form>
-      <Footer>
-        {type === "JOIN" ? (
-          <Link to="/login">LOGIN</Link>
-        ) : (
-          <Link to="/register">JOIN</Link>
-        )}
-      </Footer>
-    </AuthFormWrapper>
+          <StyledInput
+            autoComplete="off"
+            name="password"
+            type="password"
+            onChange={onChange}
+            value={form.password || ""}
+          />
+          {type === "JOIN" && (
+            <StyledInput
+              autoComplete="off"
+              name="passwordConfirm"
+              type="password"
+              onChange={onChange}
+              value={form.passwordConfirm || ""}
+            />
+          )}
+          <Button reverse>{type}</Button>
+        </form>
+        <Footer>
+          {type === "JOIN" ? (
+            <Link to="/login">LOGIN</Link>
+          ) : (
+            <Link to="/register">JOIN</Link>
+          )}
+        </Footer>
+      </AuthFormWrapper>
+      <AuthModal visible={modal} onCancel={onCancel} description={error} />
+    </>
   );
 };
 

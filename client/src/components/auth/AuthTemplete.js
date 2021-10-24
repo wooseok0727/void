@@ -4,7 +4,7 @@ import ink from "../../assets/ink.mp4";
 
 const AuthTempleteWrapper = styled.div`
   position: absolute;
-  top: 0;
+  top: 4rem;
   left: 0;
   bottom: 0;
   right: 0;
@@ -32,8 +32,8 @@ const AuthTempleteWrapper = styled.div`
     }
     @media only screen and (max-width: 767px) {
       top: 9%;
-      left: -120%;
-      width: 350%;
+      left: -195%;
+      width: 500%;
     }
   }
 `;
@@ -44,6 +44,7 @@ const AuthBox = styled.div`
     padding-bottom: 2rem;
     font-weight: bold;
     letter-spacing: 1px;
+    text-align: center;
   }
   width: 360px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.025);

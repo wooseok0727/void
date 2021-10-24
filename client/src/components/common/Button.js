@@ -1,5 +1,6 @@
 import styled, { css, keyframes } from "styled-components";
 import btn from "../../assets/btn.png";
+import { withRouter } from "react-router-dom";
 
 const ButtonFadeOut = keyframes`
     from {
@@ -34,16 +35,17 @@ const ButtonMask = styled.span`
   position: absolute;
   color: ${(props) => (props.reverse ? "#fff" : "#000")};
   width: 101%;
-  margin-top: 0.5rem;
+  margin-top: 0.6rem;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.9rem;
   letter-spacing: 1px;
+  text-align: center;
 `;
 
 const StyledButton = styled.button`
   font-family: "Space Mono", monospace;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.9rem;
   letter-spacing: 1px;
   width: 101%;
   height: 100%;
@@ -71,13 +73,22 @@ const StyledButton = styled.button`
         `}
 `;
 
-const Button = (props) => {
+const Button = ({ to, history, reverse, ...rest }) => {
+  const onClick = (e) => {
+    if (to) {
+      history.push(to);
+    }
+    if (rest.onClick) {
+      rest.onClick(e);
+    }
+  };
+
   return (
     <ButtonBox>
-      <ButtonMask reverse={props.reverse}>{props.children}</ButtonMask>
-      <StyledButton {...props} />
+      <ButtonMask reverse={reverse}>{rest.children}</ButtonMask>
+      <StyledButton {...rest} onClick={onClick} />
     </ButtonBox>
   );
 };
 
-export default Button;
+export default withRouter(Button);
