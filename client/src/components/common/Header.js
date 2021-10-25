@@ -11,6 +11,7 @@ import { logoutAPI } from "../../modules/auth";
 const HeaderWarpper = styled.div`
   position: fixed;
   width: 100%;
+  z-index: 30;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
 `;
 
@@ -19,6 +20,8 @@ const Wrapper = styled(Responsive)`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  overflow: hidden;
+  background: #fff;
   .logo_box {
     font-family: "Space Mono", monospace;
     font-size: 1.5rem;

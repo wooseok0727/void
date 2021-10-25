@@ -12,6 +12,7 @@ const AuthTempleteWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   video {
     mix-blend-mode: multiply;
     position: absolute;

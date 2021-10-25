@@ -3,8 +3,33 @@ import Post from "../../models/post.js";
 import moment from "moment";
 import mongoose from "mongoose";
 import Joi from "joi";
+import sanitizeHtml from "sanitize-html";
 
 const { ObjectId } = mongoose.Types;
+
+const sanitizeOption = {
+  allowedTags: [
+    "h1",
+    "h2",
+    "b",
+    "i",
+    "u",
+    "s",
+    "p",
+    "ul",
+    "ol",
+    "li",
+    "blockquote",
+    "a",
+    "img",
+  ],
+  allowedAttributes: {
+    a: ["href", "name", "target"],
+    img: ["src"],
+    li: ["class"],
+  },
+  allowedSchemes: ["data", "http"],
+};
 
 export const getPostById = async (req, res, next) => {
   const { id } = req.params;
@@ -29,6 +54,13 @@ export const checkOwnPost = (req, res, next) => {
     return res.sendStatus(403);
   }
   return next();
+};
+
+const removeHtmlAndShorten = (body) => {
+  const filtered = sanitizeHtml(body, {
+    allowedTags: [],
+  });
+  return filtered.length < 200 ? filtered : `${filtered.slice(0, 200)}...`;
 };
 
 /*
@@ -60,10 +92,7 @@ export const list = async (req, res, next) => {
 
     const postsSlice = posts.map((post) => ({
       ...post,
-      content:
-        post.content.length < 200
-          ? post.content
-          : `${post.content.slice(0, 200)}...`,
+      content: removeHtmlAndShorten(post.content),
     }));
 
     res.json(postsSlice);
@@ -99,7 +128,7 @@ export const write = async (req, res, next) => {
 
   const post = new Post({
     title,
-    content,
+    content: sanitizeHtml(content, sanitizeOption),
     tags,
     createdAt,
     user: res.locals.user,
@@ -129,8 +158,13 @@ export const update = async (req, res, next) => {
 
   const { id } = req.params;
 
+  const nextData = { ...req.body };
+  if (nextData.content) {
+    nextData.content = sanitizeHtml(nextData.content, sanitizeOption);
+  }
+
   try {
-    const post = await Post.findByIdAndUpdate(id, req.body, {
+    const post = await Post.findByIdAndUpdate(id, nextData, {
       new: true,
     });
     !post ? res.sendStatus(404) : res.json(post);

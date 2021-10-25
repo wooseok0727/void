@@ -11,3 +11,4 @@
 - joi : ^17.4.2
 - bcrypt : ^5.0.1
 - jsonwebtoken : ^8.5.1
+- sanitize-html : ^2.5.2

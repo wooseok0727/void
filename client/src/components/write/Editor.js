@@ -1,8 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import Quill from "quill";
 import "quill/dist/quill.bubble.css";
 import styled from "styled-components";
 import Responsive from "../common/Responsive";
+import {
+  useWriteDispatchContext,
+  useWriteStateContext,
+} from "../../context/WriteContext";
 
 const EditorWrapper = styled(Responsive)`
   padding-top: 5rem;
@@ -42,6 +46,21 @@ const Editor = () => {
   const quillElement = useRef();
   const quillInstance = useRef();
 
+  const writeState = useWriteStateContext();
+  const writeDispatch = useWriteDispatchContext();
+  const { title } = writeState;
+
+  const onChangeField = useCallback(
+    ({ name, value }) => writeDispatch({ type: "CHANGE_FIELD", name, value }),
+    [writeDispatch]
+  );
+
+  useEffect(() => {
+    return () => {
+      writeDispatch({ type: "INITIALIZE" });
+    };
+  }, [writeDispatch]);
+
   useEffect(() => {
     quillInstance.current = new Quill(quillElement.current, {
       theme: "bubble",
@@ -55,11 +74,26 @@ const Editor = () => {
         ],
       },
     });
-  }, []);
+
+    const quill = quillInstance.current;
+    quill.on("text-change", (delta, oldDelta, source) => {
+      if (source === "user") {
+        onChangeField({ name: "content", value: quill.root.innerHTML });
+      }
+    });
+  }, [onChangeField]);
+
+  const onChangeTitle = (e) => {
+    onChangeField({ name: "title", value: e.target.value });
+  };
 
   return (
     <EditorWrapper>
-      <TitleInput placeholder="Write your title" />
+      <TitleInput
+        placeholder="Write your title"
+        onChange={onChangeTitle}
+        value={title}
+      />
       <QuillWrapper>
         <div ref={quillElement} />
       </QuillWrapper>

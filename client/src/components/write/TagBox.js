@@ -1,6 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
+import {
+  useWriteDispatchContext,
+  useWriteStateContext,
+} from "../../context/WriteContext";
 
 const TagBoxWrapper = styled.div`
   width: 100%;
@@ -71,20 +75,35 @@ const TagBox = () => {
   const [input, setInput] = useState("");
   const [localTags, setLocalTags] = useState([]);
 
+  const writeState = useWriteStateContext();
+  const writeDispatch = useWriteDispatchContext();
+  const { tags } = writeState;
+
+  const onChangeTags = useCallback(
+    (nextTags) => {
+      writeDispatch({ type: "CHANGE_FIELD", name: "tags", value: nextTags });
+    },
+    [writeDispatch]
+  );
+
   const insertTag = useCallback(
     (tag) => {
       if (!tag) return;
       if (localTags.includes(tag)) return;
-      setLocalTags([...localTags, tag]);
+      const nextTags = [...localTags, tag];
+      setLocalTags(nextTags);
+      onChangeTags(nextTags);
     },
-    [localTags]
+    [localTags, onChangeTags]
   );
 
   const onRemove = useCallback(
     (tag) => {
-      setLocalTags(localTags.filter((t) => t !== tag));
+      const nextTags = localTags.filter((t) => t !== tag);
+      setLocalTags(nextTags);
+      onChangeTags(nextTags);
     },
-    [localTags]
+    [localTags, onChangeTags]
   );
 
   const onChange = useCallback((e) => {
@@ -99,6 +118,10 @@ const TagBox = () => {
     },
     [input, insertTag]
   );
+
+  useEffect(() => {
+    setLocalTags(tags);
+  }, [tags]);
 
   return (
     <TagBoxWrapper>

@@ -6,14 +6,23 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import AuthContextProvider from "./context/AuthContext";
 import UserContextProvider from "./context/UserContext";
+import WriteContextProvider from "./context/WriteContext";
+import PostContextProvider from "./context/PostContext";
+import PostsContextProvider from "./context/PostsContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthContextProvider>
       <UserContextProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <WriteContextProvider>
+          <PostContextProvider>
+            <PostsContextProvider>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </PostsContextProvider>
+          </PostContextProvider>
+        </WriteContextProvider>
       </UserContextProvider>
     </AuthContextProvider>
   </React.StrictMode>,

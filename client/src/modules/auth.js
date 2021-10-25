@@ -1,7 +1,7 @@
 import client from "./client";
 
 export const loginAPI = async (dispatch, { username, password }) => {
-  dispatch({ type: "LOGIN" });
+  await dispatch({ type: "LOGIN" });
   try {
     const response = await client.post("/api/auth/login", {
       username,
@@ -14,7 +14,7 @@ export const loginAPI = async (dispatch, { username, password }) => {
 };
 
 export const registerAPI = async (dispatch, { username, password }) => {
-  dispatch({ type: "REGISTER" });
+  await dispatch({ type: "REGISTER" });
   try {
     const response = await client.post("/api/auth/register", {
       username,

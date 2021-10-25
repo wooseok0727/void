@@ -5,7 +5,11 @@
   margin: 0;
   padding: 0;
   user-select: none;
-  overflow: hidden;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
 }
 
 body {
