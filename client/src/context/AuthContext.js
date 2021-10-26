@@ -33,7 +33,7 @@ const authReducer = (state, action) => {
     case "INITIALIZE_FORM":
       return {
         ...state,
-        [action.form]: initialState[action.form],
+        [action.form]: { ...initialState[action.form] },
         authError: null,
       };
     case "REGISTER":
