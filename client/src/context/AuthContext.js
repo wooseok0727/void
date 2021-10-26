@@ -36,6 +36,11 @@ const authReducer = (state, action) => {
         [action.form]: { ...initialState[action.form] },
         authError: null,
       };
+    case "INITIALIZE_ERROR":
+      return {
+        ...state,
+        authError: null,
+      };
     case "REGISTER":
       return {
         ...state,

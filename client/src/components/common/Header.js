@@ -16,6 +16,7 @@ const HeaderWarpper = styled.div`
 `;
 
 const Wrapper = styled(Responsive)`
+  padding-left: 0.5rem;
   height: 4rem;
   display: flex;
   align-items: center;
@@ -23,11 +24,41 @@ const Wrapper = styled(Responsive)`
   overflow: hidden;
   background: #fff;
   .logo_box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: "Space Mono", monospace;
     font-size: 1.5rem;
     font-weight: bold;
     letter-spacing: 1px;
+    border: 2px solid #000;
+    width: 110px;
+    height: 40px;
+    overflow: visible;
+    z-index: 0;
+    &:hover {
+      ::before {
+        width: 0;
+      }
+      ::after {
+        height: 0;
+      }
+    }
   }
+
+  .logo_box::before,
+  .logo_box::after {
+    position: absolute;
+    background: #fff;
+    border: none;
+    transition: 0.5s;
+    content: "";
+    z-index: -1;
+    width: 120px;
+    height: 50px;
+  }
+
   .right {
     display: flex;
     align-items: center;

@@ -43,7 +43,7 @@ const Login = ({ history }) => {
 
   useEffect(() => {
     if (authError) {
-      authDispatch({ type: "INITIALIZE_FORM" });
+      authDispatch({ type: "INITIALIZE_ERROR" });
       return setError("LOGIN FAIL");
     }
     if (auth) {

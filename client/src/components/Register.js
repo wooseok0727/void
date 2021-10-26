@@ -59,7 +59,7 @@ const Register = ({ history }) => {
 
   useEffect(() => {
     if (authError) {
-      authDispatch({ type: "INITIALIZE_FORM" });
+      authDispatch({ type: "INITIALIZE_ERROR" });
       if (authError.response.status === 409) {
         return setError("Username already exists");
       }
