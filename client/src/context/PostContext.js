@@ -32,8 +32,7 @@ const postReducer = (state, action) => {
       };
     case "UNLOAD_POST":
       return {
-        ...state,
-        initialState,
+        ...initialState,
       };
     default:
       throw new Error(`invalid action type : ${action.type} `);

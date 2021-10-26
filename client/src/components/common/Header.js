@@ -11,7 +11,7 @@ import { logoutAPI } from "../../modules/auth";
 const HeaderWarpper = styled.div`
   position: fixed;
   width: 100%;
-  z-index: 30;
+  z-index: 10;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
 `;
 

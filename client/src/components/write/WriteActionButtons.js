@@ -25,8 +25,6 @@ const WriteActionButtons = ({ history }) => {
 
   const { title, content, tags, post, postError } = writeState;
 
-  console.log(post);
-
   const onPublish = () => {
     writePostAPI(writeDispatch, { title, content, tags });
   };
@@ -38,7 +36,7 @@ const WriteActionButtons = ({ history }) => {
   useEffect(() => {
     if (post) {
       const { _id, user } = post;
-      history.replace(`/@${user.username}/${_id}`);
+      history.push(`/@${user.username}/${_id}`);
     }
     if (postError) {
       console.log(postError);

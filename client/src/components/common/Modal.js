@@ -28,6 +28,7 @@ const ModalWrapper = styled.div`
     font-size: 1.1rem;
     font-weight: bold;
     letter-spacing: 1px;
+    text-align: center;
   }
   .buttons {
     display: flex;

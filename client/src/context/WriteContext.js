@@ -11,6 +11,7 @@ const initialState = {
   tags: [],
   post: null,
   postError: null,
+  originalPostId: null,
 };
 
 const writeReducer = (state, action) => {
@@ -22,8 +23,7 @@ const writeReducer = (state, action) => {
       };
     case "INITIALIZE":
       return {
-        ...state,
-        initialState,
+        ...initialState,
       };
     case "WRITE_POST":
       return {

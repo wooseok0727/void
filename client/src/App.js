@@ -1,9 +1,19 @@
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
+import * as CTX from "./context";
 import { Route } from "react-router-dom";
 import { PostList, Post, Write, Register, Login } from "./components";
 import Header from "./components/common/Header";
 import { useUserDispatchContext } from "./context/UserContext";
 import { checkAPI } from "./modules/auth";
+
+const AppProvider = ({ contexts, children }) =>
+  contexts.reduce(
+    (prev, context) =>
+      React.createElement(context, {
+        children: prev,
+      }),
+    children
+  );
 
 const App = () => {
   const userDispatch = useUserDispatchContext();
@@ -22,14 +32,22 @@ const App = () => {
   useEffect(loadUser, [loadUser]);
 
   return (
-    <>
+    <AppProvider
+      contexts={[
+        CTX.AuthContextProvider,
+        CTX.UserContextProvider,
+        CTX.WriteContextProvider,
+        CTX.PostsContextProvider,
+        CTX.PostContextProvider,
+      ]}
+    >
       <Header />
       <Route component={PostList} path={["/@:username", "/"]} exact />
       <Route component={Login} path="/login" />
       <Route component={Register} path="/register" />
       <Route component={Write} path="/write" />
       <Route component={Post} path="/@:username/:postId" />
-    </>
+    </AppProvider>
   );
 };
 
