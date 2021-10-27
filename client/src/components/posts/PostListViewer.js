@@ -6,13 +6,13 @@ import Tags from "../common/Tags";
 import { Link } from "react-router-dom";
 
 const PostListWrapper = styled(Responsive)`
-  margin-top: 3rem;
+  margin-top: 1rem;
 `;
 
 const WritePostButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 `;
 
 const PostItemBlock = styled.div`

@@ -40,3 +40,24 @@ export const listPostsAPI = async (dispatch, { page, username, tag }) => {
     dispatch({ type: "LIST_POST_FALIURE", error: e });
   }
 };
+
+export const updatePostAPI = async (dispatch, { id, title, content, tags }) => {
+  try {
+    const response = await client.patch(`/api/posts/${id}`, {
+      title,
+      content,
+      tags,
+    });
+    dispatch({ type: "UPDATE_POST_SUCCESS", post: response.data });
+  } catch (e) {
+    dispatch({ type: "UPDATE_POST_FAILURE", postError: e });
+  }
+};
+
+export const removePostAPI = async (id) => {
+  try {
+    await client.delete(`/api/posts/${id}`);
+  } catch (e) {
+    console.log(e);
+  }
+};

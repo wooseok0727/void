@@ -41,6 +41,24 @@ const writeReducer = (state, action) => {
         ...state,
         postError: action.postError,
       };
+    case "SET_ORIGINAL_POST":
+      return {
+        ...state,
+        title: action.post.title,
+        content: action.post.content,
+        tags: action.post.tags,
+        originalPostId: action.post._id,
+      };
+    case "UPDATE_POST_SUCCESS":
+      return {
+        ...state,
+        post: action.post,
+      };
+    case "UPDATE_POST_FAILURE":
+      return {
+        ...state,
+        postError: action.postError,
+      };
     default:
       throw new Error(`invalid action type : ${action.type}`);
   }

@@ -1,5 +1,7 @@
+import { useState } from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
+import PostModal from "./PostModal";
 
 const PostActionButtonsWrapper = styled.div`
   display: flex;
@@ -15,12 +17,30 @@ const PostActionButtonsWrapper = styled.div`
   }
 `;
 
-const PostActionButtons = () => {
+const PostActionButtons = ({ onEdit, onRemove }) => {
+  const [modal, setModal] = useState(false);
+
+  const onRemoveClick = () => {
+    setModal(true);
+  };
+
+  const onCancel = () => {
+    setModal(false);
+  };
+
+  const onConfirm = () => {
+    setModal(false);
+    onRemove();
+  };
+
   return (
-    <PostActionButtonsWrapper>
-      <Button>MODIFY</Button>
-      <Button>DELETE</Button>
-    </PostActionButtonsWrapper>
+    <>
+      <PostActionButtonsWrapper>
+        <Button onClick={onEdit}>MODIFY</Button>
+        <Button onClick={onRemoveClick}>DELETE</Button>
+      </PostActionButtonsWrapper>
+      <PostModal visible={modal} onConfirm={onConfirm} onCancel={onCancel} />
+    </>
   );
 };
 

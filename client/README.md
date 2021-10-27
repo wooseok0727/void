@@ -5,3 +5,4 @@
 - axios : ^0.23.0
 - quill : ^1.3.7
 - qs: ^6.10.1
+- react-helmet-async : ^1.1.2,

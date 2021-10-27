@@ -2,15 +2,16 @@ import styled from "styled-components";
 import Responsive from "../common/Responsive";
 import SubInfo from "../common/SubInfo";
 import Tags from "../common/Tags";
+import { Helmet } from "react-helmet-async";
 
 const PostViewerWrapper = styled(Responsive)`
   font-family: "Space Mono", monospace;
-  margin-top: 4rem;
+  margin-top: 2rem;
 `;
 
 const PostHead = styled.div`
   border-bottom: 1px solid #000;
-  padding-bottom: 3rem;
+  padding-bottom: 1rem;
   margin-bottom: 3rem;
   font-family: "Space Mono", monospace;
   h1 {
@@ -24,6 +25,9 @@ const PostContent = styled.div`
   font-family: "Space Mono", monospace;
   font-size: 1.3125rem;
   color: #000;
+  li {
+    margin-left: 2.5rem;
+  }
 `;
 
 const PostViewer = ({ post, error, loading, actionButtons }) => {
@@ -42,6 +46,9 @@ const PostViewer = ({ post, error, loading, actionButtons }) => {
 
   return (
     <PostViewerWrapper>
+      <Helmet>
+        <title>{title} - VOID</title>
+      </Helmet>
       <PostHead>
         <h1>{title}</h1>
         <SubInfo username={user.username} createdAt={createdAt} hasMarginTop />

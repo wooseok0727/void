@@ -5,6 +5,7 @@ import { PostList, Post, Write, Register, Login } from "./components";
 import Header from "./components/common/Header";
 import { useUserDispatchContext } from "./context/UserContext";
 import { checkAPI } from "./modules/auth";
+import { Helmet } from "react-helmet-async";
 
 const AppProvider = ({ contexts, children }) =>
   contexts.reduce(
@@ -41,6 +42,9 @@ const App = () => {
         CTX.PostContextProvider,
       ]}
     >
+      <Helmet>
+        <title>VOID</title>
+      </Helmet>
       <Header />
       <Route component={PostList} path={["/@:username", "/"]} exact />
       <Route component={Login} path="/login" />

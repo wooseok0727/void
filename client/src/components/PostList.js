@@ -8,6 +8,7 @@ import {
 import { useUserStateContext } from "../context/UserContext";
 import { listPostsAPI } from "../modules/posts";
 import { withRouter } from "react-router";
+import Pagination from "./posts/Pagination";
 
 const PostList = ({ location, match }) => {
   const postsState = usePostsStateContext();
@@ -26,12 +27,15 @@ const PostList = ({ location, match }) => {
   }, [postsDispatch, location.search, match.params]);
 
   return (
-    <PostListViewer
-      loading={loading}
-      error={error}
-      posts={posts}
-      showWriteButton={user}
-    />
+    <>
+      <PostListViewer
+        loading={loading}
+        error={error}
+        posts={posts}
+        showWriteButton={user}
+      />
+      <Pagination />
+    </>
   );
 };
 

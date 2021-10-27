@@ -40,6 +40,10 @@ const QuillWrapper = styled.div`
   .ql-editor.ql-blank::before {
     left: 0;
   }
+  .ql-editor ol,
+  .ql-editor ul {
+    padding-left: 0;
+  }
 `;
 
 const Editor = () => {
@@ -48,7 +52,7 @@ const Editor = () => {
 
   const writeState = useWriteStateContext();
   const writeDispatch = useWriteDispatchContext();
-  const { title } = writeState;
+  const { title, content } = writeState;
 
   const onChangeField = useCallback(
     ({ name, value }) => writeDispatch({ type: "CHANGE_FIELD", name, value }),
@@ -82,6 +86,13 @@ const Editor = () => {
       }
     });
   }, [onChangeField]);
+
+  const mounted = useRef(false);
+  useEffect(() => {
+    if (mounted.current) return;
+    mounted.current = true;
+    quillInstance.current.root.innerHTML = content;
+  }, [content]);
 
   const onChangeTitle = (e) => {
     onChangeField({ name: "title", value: e.target.value });

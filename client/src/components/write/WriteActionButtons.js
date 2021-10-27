@@ -6,7 +6,7 @@ import {
   useWriteStateContext,
 } from "../../context/WriteContext";
 import { useEffect } from "react";
-import { writePostAPI } from "../../modules/posts";
+import { writePostAPI, updatePostAPI } from "../../modules/posts";
 
 const WriteActionButtonsWrapper = styled.div`
   margin-bottom: 3rem;
@@ -23,9 +23,18 @@ const WriteActionButtons = ({ history }) => {
   const writeState = useWriteStateContext();
   const writeDispatch = useWriteDispatchContext();
 
-  const { title, content, tags, post, postError } = writeState;
+  const { title, content, tags, post, postError, originalPostId } = writeState;
 
   const onPublish = () => {
+    if (originalPostId) {
+      updatePostAPI(writeDispatch, {
+        id: originalPostId,
+        title,
+        content,
+        tags,
+      });
+      return;
+    }
     writePostAPI(writeDispatch, { title, content, tags });
   };
 
@@ -36,7 +45,7 @@ const WriteActionButtons = ({ history }) => {
   useEffect(() => {
     if (post) {
       const { _id, user } = post;
-      history.push(`/@${user.username}/${_id}`);
+      history.replace(`/@${user.username}/${_id}`);
     }
     if (postError) {
       console.log(postError);
@@ -45,7 +54,9 @@ const WriteActionButtons = ({ history }) => {
 
   return (
     <WriteActionButtonsWrapper>
-      <Button onClick={onPublish}>POST ADD</Button>
+      <Button onClick={onPublish}>
+        {!!originalPostId ? "MODIFY" : "POST ADD"}
+      </Button>
       <Button onClick={onCancel}>CANCEL</Button>
     </WriteActionButtonsWrapper>
   );
