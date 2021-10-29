@@ -48,7 +48,7 @@ const Modal = ({
   return (
     <Fullscreen>
       <ModalWrapper>
-        <p>{description}</p>
+        <p dangerouslySetInnerHTML={{ __html: description }} />
         <div className="buttons">
           {onConfirm ? (
             <>

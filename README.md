@@ -17,4 +17,3 @@
 - Qeury reconfirm
 - create 404 Page
 - Routing Control ( Auth )
-- Auth Error Message Reform

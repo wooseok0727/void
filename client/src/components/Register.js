@@ -32,7 +32,7 @@ const Register = ({ history }) => {
     e.preventDefault();
     const { username, password, passwordConfirm } = register;
     if ([username, password, passwordConfirm].includes("")) {
-      return setError("Please fill in the field");
+      return setError(`Please <br> fill in the field`);
     }
     if (password !== passwordConfirm) {
       setError("Invalid password");

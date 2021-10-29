@@ -32,7 +32,7 @@ const Login = ({ history }) => {
     e.preventDefault();
     const { username, password } = login;
     if ([username, password].includes("")) {
-      return setError("Please fill in the field");
+      return setError(`Please <br> fill in the field`);
     }
     loginAPI(authDispatch, { username, password });
   };

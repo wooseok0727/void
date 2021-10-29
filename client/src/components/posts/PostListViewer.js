@@ -63,7 +63,7 @@ const PostListViewer = ({ posts, loading, error, showWriteButton }) => {
         {showWriteButton && <Button to="/write">WRITE</Button>}
       </WritePostButtonWrapper>
       {!loading && posts && (
-        <div>
+        <div className="list">
           {posts.map((post) => (
             <PostItem post={post} key={post._id} />
           ))}
